@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+  
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                > 
+    
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                > 
+    
+<!--      <Button
+          android:id="@+id/button_capture"
+          android:text="Capture"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:onClick="onCapture"
+          /> -->
+      <Button
+          android:id="@+id/button_settime"
+          android:text="Time"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:onClick="onSetTime"
+          />
+<!--      <Button
+          android:id="@+id/button_setPath"
+          android:text="Path"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          /> -->
+      <Button
+          android:id="@+id/button_startStop"
+          android:text="Start"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:onClick="onStartStop"
+          />
+      <Button
+          android:id="@+id/button_info"
+          android:text="Info"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:onClick="onInfo"
+          />
+      <Button
+          android:id="@+id/button_exit"
+          android:text="Exit"
+          android:layout_width="80dp"
+          android:layout_height="wrap_content"
+          android:onClick="onExit"
+          />
+    </LinearLayout>
+  </LinearLayout>
+  
+  <TextView  
+      android:id="@+id/text_info"      
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:background="#aaaaaa"
+      android:textColor="#000000"
+      /> 
+
+</LinearLayout>
+
