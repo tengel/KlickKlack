@@ -1,6 +1,7 @@
 package org.tengel.klickklack;
 
 import android.app.Activity;
+import android.graphics.ImageFormat;
 import android.os.Bundle;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -13,6 +14,7 @@ import java.io.FileNotFoundException;
 import android.widget.Button;
 import android.view.View;
 import android.util.Log;
+import java.util.List;
 import android.os.Environment;
 import android.net.Uri;
 import android.content.Intent;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import android.content.DialogInterface;
 import android.widget.EditText;
 import java.lang.Integer;
+import android.hardware.SensorManager;
+import android.hardware.Sensor;
 
 
 public class KlickKlack extends Activity
@@ -101,10 +105,33 @@ public class KlickKlack extends Activity
     private void setupApp()
     {
         KlickKlack.m_camera = Camera.open();
+        Camera.Parameters parameter = m_camera.getParameters();
+        Log.d(TAG, "supported formats: " + parameter.getSupportedPictureFormats());
+        parameter.setPictureFormat(ImageFormat.JPEG);
+        parameter.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        parameter.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        m_camera.setParameters(parameter);
+
         m_preview = new CameraPreview(this, KlickKlack.m_camera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(m_preview);
         m_fileHandler = new PictureHandler(m_preview, (Context)this);
+        Log.d(TAG, "setupApp()");
+
+        SensorManager sensorManager;
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        List<Sensor> deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        for( Sensor s: deviceSensors) {
+            Log.d(TAG, "Sensor: Vendor: '" + s.getVendor() + "' Name: '" + s.getName() +
+                    "' Type: " + s.getType());
+        }
+
+        Sensor lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if (lightSensor == null) {
+            Log.d(TAG, "no light sensor found");
+        }
+
+
     }
 
 

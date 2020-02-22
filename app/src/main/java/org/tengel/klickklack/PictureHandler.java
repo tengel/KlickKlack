@@ -1,6 +1,9 @@
 package org.tengel.klickklack;
 
 import java.io.IOException;
+
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import android.media.MediaScannerConnection;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 
 class PictureHandler implements PictureCallback
@@ -22,6 +26,8 @@ class PictureHandler implements PictureCallback
     private File          m_dir;
     private Context       m_context;
     private File          m_pictureFile;
+    private int           m_grayLevel;
+    private String        m_status;
 
 
     
@@ -43,6 +49,33 @@ class PictureHandler implements PictureCallback
     
     public void onPictureTaken(byte[] data, Camera camera)
     {
+        Bitmap bm = BitmapFactory.decodeByteArray(data, 0, data.length);
+        if (bm != null) {
+            long pxSum = 0;
+            int pxCount = 0;
+            for (int x = 0; x < bm.getWidth(); x+=100) {
+                for (int y = 0; y < bm.getHeight(); y+=100) {
+                    int px = bm.getPixel(x, y);
+                    pxSum += (Color.red(px) + Color.green(px) + Color.blue(px)) / 3;
+                    pxCount += 1;
+                }
+            }
+            m_grayLevel = (int) (pxSum / pxCount);
+            Log.d(TAG, "picture gray level: " + m_grayLevel);
+        }
+        else {
+            Log.d(TAG, "Failed to decode byte stream");
+        }
+
+        if (m_grayLevel < 50) {
+            m_status = "skipped";
+            return;
+        }
+        else {
+            m_status = "ok";
+        }
+
+
         m_preview.restart();
         String ts = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         m_pictureFile = new File(m_dir, "IMG_" + ts + ".jpg");
@@ -76,11 +109,11 @@ class PictureHandler implements PictureCallback
     {
         if (m_pictureFile != null)
         {
-            return m_pictureFile.getName();
+            return m_pictureFile.getName() + " (" + m_grayLevel + ", " + m_status + ")";
         }
         else
         {
-            return " - ";
+            return " - (" + m_grayLevel + ", " + m_status + ")";
         }
     }
     

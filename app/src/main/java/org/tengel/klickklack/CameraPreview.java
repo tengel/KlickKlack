@@ -6,10 +6,12 @@ import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceHolder;
 import 	android.view.SurfaceView;
 import java.io.IOException;
+import java.util.List;
+
 import android.hardware.Camera;
 import android.content.Context;
 import 	android.widget.FrameLayout;
-
+import android.util.Log;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 {
@@ -67,6 +69,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         // set preview size and make any resize, rotate or
         // reformatting changes here
+        //List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
+        //Log.d(KlickKlack.TAG, "supported preview size: " + sizes);
+        //Camera.Size optimalSize = getOptimalPreviewSize(sizes, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
+        //mCamera.getParameters().setPreviewSize(sizes.get(1).width, sizes.get(1).height);
 
         // start preview with new settings
         try {
